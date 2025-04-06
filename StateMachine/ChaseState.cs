@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class ChaseState: AIState
 {
+	private AIStateMachine ai;
 	public float minDistanceToAttack = 1.2f;
-	public override void EnterState(AIStateManager context){
-		// Debug.Log("Chasing");
+
+	public ChaseState(AIStateMachine ai){
+		this.ai = ai;
 	}
-	public override void DoState(AIStateManager context){
-		if(context.aggro.hasTarget){
-			context.movement.SetMoveDirection(context.aggro.targetDirection);
-			if(Vector2.Distance(context.transform.position, context.aggro.target) < minDistanceToAttack
-			&& context.meleeAttack.isReadyToAttack){
-				context.SwitchState(context.meleeAttackState);
+	
+	public override void UpdateState(){
+		if(ai.aggro.hasTarget){
+			ai.movement.SetMoveDirection(ai.aggro.targetDirection);
+			if(Vector2.Distance(ai.transform.position, ai.aggro.target) < minDistanceToAttack
+			&& ai.attack.isReadyToAttack){
+				ai.SwitchState(new MeleeAttackState(ai));
 			}
 		}
-		else context.SwitchState(context.idleState);
+		else ai.SwitchState( new IdleState(ai));
 	}
 }

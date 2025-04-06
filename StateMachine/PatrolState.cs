@@ -3,28 +3,35 @@ using UnityEngine;
 
 public class PatrolState: AIState
 {
-	Vector2 randomDirection;
-	Coroutine coroutine;
-	bool isPatrolling = false;
+	private Vector2 _randomDirection;
+	private Coroutine _coroutine;
+	private bool _isPatrolling = false;
 
-	public override void EnterState(AIStateManager context){
-		Debug.Log("Patrolling");
-		randomDirection = Random.insideUnitCircle.normalized;
-		coroutine = context.StartCoroutine(CPatrol(context));
+	private AIStateMachine ai;
+
+	public PatrolState(AIStateMachine ai){
+		this.ai = ai;
 	}
-	public override void DoState(AIStateManager context){
-		if(isPatrolling && context.aggro.hasTarget){
-			context.StopCoroutine(coroutine);
-			context.SwitchState(context.chaseState);
+
+	public override void EnterState(){
+		// Debug.Log("Patrolling");
+		_randomDirection = Random.insideUnitCircle.normalized;
+		_coroutine = ai.StartCoroutine(CPatrol());
+	}
+
+	public override void UpdateState(){
+		if(_isPatrolling && ai.aggro.hasTarget){
+			ai.StopCoroutine(_coroutine);
+			ai.SwitchState(new ChaseState(ai));
 		}
 	}
 
-	private IEnumerator CPatrol(AIStateManager context){
-		context.movement.SetMoveDirection(randomDirection);
-		isPatrolling = true;
+	private IEnumerator CPatrol(){
+		ai.movement.SetMoveDirection(_randomDirection);
+		_isPatrolling = true;
 		yield return new WaitForSeconds(1f);
-		isPatrolling = false;
-		context.SwitchState(context.idleState);
+		_isPatrolling = false;
+		ai.SwitchState(new IdleState(ai));
 	}
 
 	

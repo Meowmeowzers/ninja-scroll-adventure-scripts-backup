@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class MeleeAttackState: AIState
 {
-	public override void EnterState(AIStateManager context){
-		Debug.Log("Melee");
-		context.movement.SetMoveDirection(Vector2.zero);
-		context.meleeAttack.Attack();
-		context.SwitchState(context.chaseState);
-	}
-	public override void DoState(AIStateManager context){
-		
+	private AIStateMachine ai;
+
+	public MeleeAttackState(AIStateMachine ai){
+		this.ai = ai;
 	}
 
-
-
+	public override void EnterState(){
+		// Debug.Log("Melee");
+		ai.movement.SetMoveDirection(Vector2.zero);
+		ai.attack.InitiateAttack(ai.stats);
+		ai.SwitchState( new ChaseState(ai));
+	}
 }
