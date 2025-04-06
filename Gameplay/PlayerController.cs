@@ -4,10 +4,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    private Movement _characterMovement;
+    Movement _characterMovement;
+    PlayerInteraction _playerInteraction;
 
     private void Awake(){
         _characterMovement = GetComponent<Movement>();
+        _playerInteraction = GetComponentInChildren<PlayerInteraction>();
     }
 
     public void OnMove(InputValue input){
@@ -15,5 +17,8 @@ public class PlayerController : MonoBehaviour
     }
     public void OnMeleeAttack(InputValue input){
         _characterMovement.Test();
+    }
+    public void OnInteract(InputValue input){
+        _playerInteraction.Interact();
     }
 }
