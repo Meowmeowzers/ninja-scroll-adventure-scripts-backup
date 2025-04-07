@@ -14,11 +14,13 @@ public class AIStateMachine: MonoBehaviour
 		movement = GetComponent<Movement>();
         aggro = GetComponentInChildren<AggroRange>();
         attack = GetComponent<Attack>();
-
+    }
+	void Start()
+	{
         currentState = new IdleState(this);
         currentState.EnterState();
-    }
-	
+	}
+
 	void Update(){
 		currentState.UpdateState();
 	}

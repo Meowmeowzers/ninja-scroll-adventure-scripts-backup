@@ -10,7 +10,6 @@ public class PlayerInteraction : MonoBehaviour
 		if(collision.GetComponent<IInteractable>() != null){
             _interactable = collision.GetComponent<IInteractable>();
             _hasInteractable = true;
-            Debug.Log("add");
         }
 	}
 
@@ -18,7 +17,6 @@ public class PlayerInteraction : MonoBehaviour
 	{
 		_interactable = null;
         _hasInteractable = false;
-        Debug.Log("removed");
 	}
 
     public void Interact(){

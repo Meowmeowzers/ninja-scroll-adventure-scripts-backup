@@ -12,7 +12,7 @@ public class MeleeAttackState: AIState
 	public override void EnterState(){
 		// Debug.Log("Melee");
 		ai.movement.SetMoveDirection(Vector2.zero);
-		ai.attack.InitiateAttack(ai.stats);
+		ai.attack.InitiateAttack();
 		ai.SwitchState( new ChaseState(ai));
 	}
 }

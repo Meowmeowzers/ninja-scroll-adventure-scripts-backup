@@ -4,12 +4,21 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     [SerializeField] Weapon weapon;
+    Animator anim;
     public bool isReadyToAttack = true;
     public float timeToAttack = 2f;
 
-    public void InitiateAttack(Stats stats){
-        weapon.Execute(stats);
-        if(isReadyToAttack) StartCoroutine(CAttackCooldown());
+	void Awake()
+	{
+        anim = GetComponent<Animator>();
+	}
+
+	public void InitiateAttack(){
+        // weapon.Execute(stats);
+        if(isReadyToAttack){
+            anim.SetTrigger("Attack");
+            StartCoroutine(CAttackCooldown());
+        }
     }
 
     public IEnumerator CAttackCooldown(){
