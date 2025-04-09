@@ -1,37 +1,72 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class Movement : MonoBehaviour
 {
-    Transform _tf;
     Rigidbody2D _rb;
     Animator _anim;
     Vector2 _movingDirection;
     Vector2 _facingDirection = Vector2.down;
     [SerializeField] float _speed = 2f;
+    [SerializeField] bool _canMove = true;
+    [SerializeField] bool _isMoving = false;
 
     void Awake()
     {
         _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
-        _tf = GetComponent<Transform>();
     }
 
     void FixedUpdate(){
+        // if(_unitState.GetCurrentState() == CharacterState.Attacking || !_canMove){
+        if(!_canMove){
+            _rb.velocity = Vector2.zero;
+            return;
+        }
         _rb.velocity = _movingDirection * _speed;
     }
 
     public void SetMoveDirection(Vector2 input){
+        // if(!_canMove) return;
+        
+        if(input != Vector2.zero){
+            _facingDirection = input;
+            _isMoving = true;
+        }
+        else{
+            _isMoving = false;
+        }
+
         _movingDirection = input;
-        if(input != Vector2.zero) _facingDirection = input;
         _anim.SetFloat("Speed", input.sqrMagnitude);
-        _anim.SetFloat(Animator.StringToHash("MoveX"), _movingDirection.x);
-        _anim.SetFloat(Animator.StringToHash("MoveY"), _movingDirection.y);
-        _anim.SetFloat(Animator.StringToHash("FaceX"), _facingDirection.x);
-        _anim.SetFloat(Animator.StringToHash("FaceY"), _facingDirection.y);
-        _anim.Play("Walk");
+        _anim.SetFloat("MoveX", _movingDirection.x);
+        _anim.SetFloat("MoveY", _movingDirection.y);
+        _anim.SetFloat("FaceX", _facingDirection.x);
+        _anim.SetFloat("FaceY", _facingDirection.y);
     }
-    public void Test(){
-        _rb.AddForceAtPosition(Vector2.down * _speed * 10, _tf.position);
+
+    public void SetFacingDirection(Vector2 input){
+        _facingDirection = input;
+        _anim.SetFloat("FaceX", _facingDirection.x);
+        _anim.SetFloat("FaceY", _facingDirection.y);
     }
+    public void SetCanMove(bool i){
+        _canMove = i;
+    }
+    public Vector2 GetFacingDirection(){
+        return _facingDirection;
+    }
+
+    public bool GetIsMoving(){
+        return _isMoving;
+    }
+
+	void OnDisable()
+	{
+        _canMove = false;
+        _anim.SetFloat("Speed", 0f);
+        _anim.SetFloat("MoveX", 0f);
+        _anim.SetFloat("MoveY", 0f);
+        _rb.velocity = Vector2.zero;
+	}
 }

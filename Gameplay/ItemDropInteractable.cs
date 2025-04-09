@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class ItemDropInteract : MonoBehaviour, IInteractable
 {
-    [SerializeField] GameObject itemToDrop;
-    [SerializeField] Sprite openedSprite;
-    [SerializeField] bool isOpened = false;
-    SpriteRenderer sr;
+    [SerializeField] GameObject _itemToDrop;
+    [SerializeField] Sprite _openedSprite;
+    [SerializeField] bool _isOpened = false;
+    SpriteRenderer _sr;
 
     void Awake(){
-        sr = GetComponent<SpriteRenderer>();
+        _sr = GetComponent<SpriteRenderer>();
     }
 
     public void Interact(){
-        if(!isOpened){
-            sr.sprite = openedSprite;
-            Instantiate(itemToDrop, transform.position + new Vector3(0,-1,0), Quaternion.identity);
+        if(!_isOpened){
+            _sr.sprite = _openedSprite;
+            Instantiate(_itemToDrop, transform.position + new Vector3(0,-1,0), Quaternion.identity);
         }
     }
 

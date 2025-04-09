@@ -1,46 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class Stats : MonoBehaviour
 {
-    [SerializeField] float currentHealth = 0f;
-    [SerializeField] float startingHealth = 10f;
-    [SerializeField] float maxHealth = 10f;
-    [SerializeField] float _baseDamage = 2f;
-    [SerializeField] bool isDead = false;
+    [SerializeField] internal float _currentHealth = 0f;
+    [SerializeField] internal float _startingHealth = 10f;
+    [SerializeField] internal float _maxHealth = 10f;
+    [SerializeField] internal float _baseDamage = 2f;
+    [SerializeField] internal bool _isKO = false;
     public event Action<float> HealthChanged;
+    protected event Action UnitKO;
 
 	void Awake()
 	{
-        currentHealth = startingHealth;
-        if(startingHealth > maxHealth) currentHealth = maxHealth;
+        _currentHealth = _startingHealth;
+        if(_startingHealth > _maxHealth) _currentHealth = _maxHealth;
 	}
 
-    public void RestoreHealth(float amount){
-        if(isDead) return;
-
-        currentHealth += amount;
-
-        if(currentHealth > maxHealth){
-            currentHealth = maxHealth;
-        }
-        HealthChanged?.Invoke(currentHealth);
-    }
-    public void DamageHealth(float amount){
-        if(isDead) return;
-
-        currentHealth -= amount;
-
-        if(currentHealth < 1f){
-            isDead = true;
-        }
-        HealthChanged?.Invoke(currentHealth);
-    }
-
     public float GetHealth(){
-        return currentHealth;
+        return _currentHealth;
     }
 
+    protected void OnUnitIsKO(){
+        UnitKO?.Invoke();
+    }
+    public void SubscribeOnUnitKO(Action value){
+        UnitKO += value;
+    }
 }

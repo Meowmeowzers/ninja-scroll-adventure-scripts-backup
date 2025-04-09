@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AttackType : ScriptableObject
 {
     
-	public abstract void Execute(Stats stats);
+	public abstract void InitializeWeapon(Weapon weapon);
+	public abstract void ExitWeapon(Weapon weapon);
+	public virtual void Execute(Weapon weapon, GameObject source){}
 }

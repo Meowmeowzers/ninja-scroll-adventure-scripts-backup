@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EncounterEntrance : MonoBehaviour
@@ -10,8 +8,4 @@ public class EncounterEntrance : MonoBehaviour
             GetComponentInParent<EncounterZone>().ZoneStart();
         }
 	}
-
-    void StartZone(){
-
-    }
 }

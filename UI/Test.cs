@@ -21,6 +21,6 @@ public class Test : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
         if(collision.CompareTag("Player"))
-		    collision.GetComponent<Stats>().DamageHealth(2f);
+		    collision.GetComponent<IDamageable>().DamageHealth(2f);
 	}
 }

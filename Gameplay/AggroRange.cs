@@ -27,4 +27,8 @@ public class AggroRange : MonoBehaviour
             target = Vector3.zero;
         }
     }
+
+    public bool CheckTargetExist(){
+        return hasTarget;
+    }
 }

@@ -23,8 +23,6 @@ public class PlayerInteraction : MonoBehaviour
         if(_interactable != null){
             _interactable.Interact();
             Debug.Log("interact");
-            return;
         }
-        Debug.Log("none");
     }
 }
