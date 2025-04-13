@@ -1,13 +1,16 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public enum CharacterState {Idle, Moving, Attacking, KO}
 
-[RequireComponent(typeof(Movement), typeof(Attack), typeof(Stats))]
+[RequireComponent(typeof(Stats), typeof(Movement), typeof(Attack))]
 public class UnitController: MonoBehaviour
 {
     [SerializeField] CharacterState _currentState = CharacterState.Idle;
 
     Animator anim;
+    SpriteRenderer sr;
     Rigidbody2D rb;
     Collider2D col;
 	Movement movement;
@@ -16,11 +19,13 @@ public class UnitController: MonoBehaviour
 	PlayerInteraction playerInteraction;
     EnemyController ai;
     AggroRange aggro;
+    Weapon weapon;
 
 	void Awake()
 	{
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
 		movement = GetComponent<Movement>();
         attack = GetComponent<Attack>();
@@ -28,32 +33,11 @@ public class UnitController: MonoBehaviour
         ai = GetComponent<EnemyController>();
         playerInteraction = GetComponentInChildren<PlayerInteraction>();
         aggro = GetComponentInChildren<AggroRange>();
+        weapon = GetComponentInChildren<Weapon>();
         stats.SubscribeOnUnitKO(OnKO);
+        stats.SubscribeOnUnitDamaged(OnDamaged);
+
 	}
-
-	private void OnKO()
-	{
-		_currentState = CharacterState.KO;
-
-        anim.SetBool("isDead", true);
-        col.enabled = false;
-        movement.enabled = false;
-        attack.enabled = false;
-        
-        if(playerInteraction != null){
-            playerInteraction.enabled = false;
-        }
-        if(aggro != null){
-            aggro.enabled = false;
-        }
-        if(ai != null){
-            ai.enabled = false;
-        }
-	}
-
-	public void SwitchState(CharacterState state){
-        _currentState = state;
-    }
 
 	void Update()
 	{
@@ -73,18 +57,45 @@ public class UnitController: MonoBehaviour
             attack.InitiateAttack(movement.GetFacingDirection());
     }
 
-    public Attack GetAttack(){
-        return attack;
-    }
-    public Movement GetMovement(){
-        return movement;
-    }
-	public PlayerInteraction GetPlayerInteraction() { 
-        return playerInteraction; 
+    private void OnKO()
+	{
+		_currentState = CharacterState.KO;
+
+        anim.SetBool("isDead", true);
+        col.enabled = false;
+        movement.enabled = false;
+        attack.enabled = false;
+        weapon.enabled = false;
+        if(playerInteraction != null){
+            playerInteraction.enabled = false;
+        }
+        if(aggro != null){
+            aggro.enabled = false;
+        }
+        if(ai != null){
+            ai.enabled = false;
+        }
+	}
+
+    private void OnDamaged(){
+        StartCoroutine(HitAnimationRoutine());
     }
 
-    public AggroRange GetAggroRange(){
-        return aggro;
+	private IEnumerator HitAnimationRoutine()
+	{
+        sr.color = Color.HSVToRGB(0,0.25f,1f);
+		yield return new WaitForSeconds(0.1f);
+        sr.color = Color.HSVToRGB(0,0,1f);
+	}
+
+	public void SwitchState(CharacterState state){
+        _currentState = state;
     }
+
+    public Attack GetAttack() => attack;
+    public Movement GetMovement() => movement;
+	public PlayerInteraction GetPlayerInteraction() => playerInteraction;
+    public AggroRange GetAggroRange() => aggro;
+    public CharacterState GetState() => _currentState;
 
 }

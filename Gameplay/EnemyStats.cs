@@ -1,11 +1,5 @@
 public class EnemyStats : Stats, IDamageable
 {
-	void Awake()
-	{
-        _currentHealth = _startingHealth;
-        if(_startingHealth > _maxHealth) _currentHealth = _maxHealth;
-	}
-
     public void RestoreHealth(float amount){
         if(_isKO) return;
 
@@ -19,12 +13,11 @@ public class EnemyStats : Stats, IDamageable
         if(_isKO) return;
 
         _currentHealth -= amount;
-
+        OnUnitDamaged();
         if(_currentHealth < 1f){
             _isKO = true;
+            GetComponent<ItemDrop>().DropItem(transform.position);
             OnUnitIsKO();
         }
     }
-
-
 }

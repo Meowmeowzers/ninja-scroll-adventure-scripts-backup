@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     Animator _anim;
     Rigidbody2D _rb;
     GameObject _source;
+    Stats _ignore;
     float _damage = 1f;
 
 	void Awake()
@@ -34,6 +35,7 @@ public class Projectile : MonoBehaviour
     public void Fire(Weapon weapon, GameObject source)
 	{
         _source = source;
+        _damage = weapon.GetDamage();
         _anim.SetBool("Normal",true);
 		_rb.AddForce(weapon.GetDirection() * _speed, ForceMode2D.Impulse);
     }

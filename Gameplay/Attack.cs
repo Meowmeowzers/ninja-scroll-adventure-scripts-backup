@@ -5,8 +5,10 @@ public class Attack : MonoBehaviour
 {
     [SerializeField] Weapon _weapon;
     [SerializeField] float _timeToAttack = 2f;
-    [SerializeField] float _minTimeToAttacking = 0.2f;
-    [SerializeField] bool _isAttacking = false;
+    [SerializeField] float _extraRandomTimeToAttack = 0f;
+    [SerializeField] float _attackDamage = 1f;
+    bool _isAttacking = false;
+    float _minTimeToAttacking = 0.2f;
     Animator _anim;
     Movement _movement;
     bool _isReadyToAttack = true;
@@ -31,7 +33,7 @@ public class Attack : MonoBehaviour
             _isAttacking = true;
             _isReadyToAttack = false;
             
-            _weapon.StartWeapon();
+            _weapon.StartWeapon(_attackDamage);
             _weapon.Execute(facingDirection, gameObject);
 
             StartCoroutine(CAttackCooldown());
@@ -48,7 +50,7 @@ public class Attack : MonoBehaviour
 	}
 
 	public IEnumerator CAttackCooldown(){
-		yield return new WaitForSeconds(_timeToAttack);
+		yield return new WaitForSeconds(_timeToAttack + Random.Range(0, _extraRandomTimeToAttack));
 		_isReadyToAttack = true;
 	}
 
@@ -58,6 +60,17 @@ public class Attack : MonoBehaviour
 
     public bool CheckIfReadyToAttack(){
         return _isReadyToAttack;
+    }
+
+    public float GetAttackDamage(){
+        return _attackDamage;
+    }
+    public void SetAttackDamage(float newDamage){
+        _attackDamage = newDamage;
+    }
+
+    public void AddAttackDamage(float value){
+        _attackDamage += value;
     }
 
 	void OnDisable()

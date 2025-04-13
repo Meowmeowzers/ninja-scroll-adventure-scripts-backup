@@ -21,7 +21,6 @@ public class BasicMeleettack : AttackType
 	public override void Execute(Weapon weapon, GameObject source){		
 		_angle = Mathf.Atan2(weapon.GetDirection().y, weapon.GetDirection().x) * Mathf.Rad2Deg; // get angle from vector2
 		_offset = Quaternion.Euler(0, 0, _angle) * Vector2.right * _offsetDistance; // convert angle to vector2
-		Debug.Log("attack");
 		weapon.transform.SetLocalPositionAndRotation(_offset + _initialLocationOffset, Quaternion.Euler(0f, 0f, _angle - 90f));
 	}
 }

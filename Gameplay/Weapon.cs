@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
    BoxCollider2D col;
    SpriteRenderer sr;
    Vector2 _direction;
+   float _attackDamage = 1f;
 
 	void Awake()
 	{
@@ -29,18 +30,20 @@ public class Weapon : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
       if(collision.GetComponent<IDamageable>() != null){
-         collision.GetComponent<IDamageable>().DamageHealth(1f);
+         collision.GetComponent<IDamageable>().DamageHealth(_attackDamage);
       }
 	}
 
-	public void StartWeapon(){
+	public void StartWeapon(float attackDamage)
+	{
+      _attackDamage = attackDamage;
       attackType.InitializeWeapon(this);
    }
 
 	public void Execute(Vector2 direction, GameObject source)
 	{
       _direction = direction;
-      if(attackType != null){
+      if(attackType != null){ 
          attackType.Execute(this, source);
       }
 	}
@@ -54,4 +57,7 @@ public class Weapon : MonoBehaviour
       return _direction;
    }
 
+	internal float GetDamage(){
+      return _attackDamage;
+   }
 }
