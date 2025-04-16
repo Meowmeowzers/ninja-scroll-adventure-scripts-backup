@@ -9,14 +9,16 @@ public class ChaseState: State
 	}
 	
 	public override void UpdateState(EnemyController ai){
-		if(ai.GetController().GetAggroRange().CheckTargetExist()){
+		if(ai.GetController().GetAggroRange().DoesTargetExist()){
 			
-			ai.GetController().Move(ai.GetController().GetAggroRange().targetDirection);
+			ai.GetController().Move(ai.GetController().GetAggroRange().GetTargetDirection());
 
-			if(Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().target) < minDistanceToAttack){
+			if(Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().GetTarget()) < minDistanceToAttack){
 				ai.SwitchState(ai.attackState);
 			}
 		}
-		else ai.SwitchState(ai.patrolState);
+		else {
+			ai.SwitchState(ai.patrolState);
+		}
 	}
 }

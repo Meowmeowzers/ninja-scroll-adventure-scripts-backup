@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "State/Attack")]
-public class MeleeAttackState: State
+public class MeleeAttackState : State
 {
 	[SerializeField] float minDistanceToAttack = 1.2f;
 
@@ -11,14 +11,14 @@ public class MeleeAttackState: State
 	}
 
 	public override void UpdateState(EnemyController ai){
-		if(Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().target) < minDistanceToAttack
-		&& ai.GetController().GetAggroRange().CheckTargetExist()
+		if (Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().GetTarget()) < minDistanceToAttack
+		&& ai.GetController().GetAggroRange().DoesTargetExist()
 		&& ai.GetController().GetAttack().CheckIfReadyToAttack()){
-			ai.GetController().GetMovement().SetFacingDirection(ai.GetController().GetAggroRange().targetDirection);
+			ai.GetController().GetMovement().SetFacingDirection(ai.GetController().GetAggroRange().GetTargetDirection());
 			ai.GetController().Attack();
 		}
-		else if(Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().target) > minDistanceToAttack
-		&& ai.GetController().GetAggroRange().CheckTargetExist()){
+		else if(Vector2.Distance(ai.gameObject.transform.position, ai.GetController().GetAggroRange().GetTarget()) > minDistanceToAttack
+		&& ai.GetController().GetAggroRange().DoesTargetExist()){
 			ai.SwitchState(ai.chaseState);
 		}
 	}

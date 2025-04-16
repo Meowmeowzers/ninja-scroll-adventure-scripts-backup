@@ -28,9 +28,6 @@ public class EncounterSpawner : MonoBehaviour
         isActive = true;
     }
 
-
-
-    
 	void OnDestroy()
 	{
 		Pawned -= action;

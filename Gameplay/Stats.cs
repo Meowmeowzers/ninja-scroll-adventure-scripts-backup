@@ -8,9 +8,9 @@ public class Stats : MonoBehaviour
     [SerializeField] internal float _startingHealth = 10f;
     [SerializeField] internal float _maxHealth = 10f;
     [SerializeField] internal bool _isKO = false;
-    public event Action<float> HealthChanged;
-    protected event Action UnitKO;
-    protected event Action UnitDamaged;
+    public event Action<float> OnHealthChanged;
+    public event Action UnitKO;
+    public event Action UnitDamaged;
 
 	void Awake()
 	{
@@ -28,13 +28,10 @@ public class Stats : MonoBehaviour
     protected void OnUnitDamaged(){
         UnitDamaged?.Invoke();
     }
-    public void SubscribeOnUnitKO(Action value){
-        UnitKO += value;
-    }
-    public void SubscribeOnUnitDamaged(Action value){
-        UnitDamaged += value;
-    }
     public IEnumerator TakeHitEffect(){
         yield return new WaitForSeconds(0.1f);
+    }
+    public void UpdateHealth(){
+        OnHealthChanged?.Invoke(_currentHealth);
     }
 }

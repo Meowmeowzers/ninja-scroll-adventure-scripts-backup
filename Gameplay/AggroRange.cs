@@ -1,34 +1,44 @@
-
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class AggroRange : MonoBehaviour
 {
-    public Vector2 targetDirection;
-    public Vector3 target;
-    public bool hasTarget = false;
+    [SerializeField] Vector2 _targetDirection;
+    [SerializeField] Vector3 _target;
+    [SerializeField] float _radius = 5f;
+    bool _hasTarget = false;
 
-    void OnTriggerStay2D(Collider2D collision)
+	void Awake()
+	{
+		GetComponent<CircleCollider2D>().radius = _radius;
+	}
+
+	void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            hasTarget = true;
-            targetDirection = (collision.transform.position - transform.position).normalized;
-            target = collision.transform.position;
+            _hasTarget = true;
+            _targetDirection = (collision.transform.position - transform.position).normalized;
+            _target = collision.transform.position;
         }
     }
-
     void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            hasTarget = false;
-            targetDirection = Vector2.zero;
-            target = Vector3.zero;
+            _hasTarget = false;
+            _targetDirection = Vector2.zero;
+            _target = Vector3.zero;
         }
     }
 
-    public bool CheckTargetExist(){
-        return hasTarget;
+    public Vector2 GetTargetDirection(){
+        return _targetDirection;
+    }
+    public Vector2 GetTarget(){
+        return _target;
+    }
+    public bool DoesTargetExist(){
+        return _hasTarget;
     }
 }

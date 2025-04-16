@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class Movement : MonoBehaviour
 {
+    [SerializeField] float _speed = 2f;
     Rigidbody2D _rb;
     Animator _anim;
     Vector2 _movingDirection;
     Vector2 _facingDirection = Vector2.down;
-    [SerializeField] float _speed = 2f;
-    [SerializeField] bool _canMove = true;
-    [SerializeField] bool _isMoving = false;
+    bool _canMove = true;
+    bool _isMoving = false;
 
     void Awake()
     {

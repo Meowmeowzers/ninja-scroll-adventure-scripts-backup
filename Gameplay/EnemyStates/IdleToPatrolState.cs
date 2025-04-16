@@ -10,10 +10,12 @@ public class IdleState: State
 	[SerializeField] 
 	float _randomAddDuration = 0f;
 	float _newDuration;
+	IEnumerator _ref;
 
 	public override void EnterState(EnemyController ai){
 		ai.GetController().Move(Vector2.zero);
-		ai.StartCoroutine(GoPatrolRoutine(ai));
+		_ref = GoPatrolRoutine(ai);
+		ai.StartCoroutine(_ref);
 	}
 	
 	private IEnumerator GoPatrolRoutine(EnemyController ai){
@@ -24,7 +26,7 @@ public class IdleState: State
 
 	public override void ExitState(EnemyController ai)
 	{
-		ai.StopCoroutine(nameof(GoPatrolRoutine));
+		ai.StopCoroutine(_ref);
 	}
 
 }

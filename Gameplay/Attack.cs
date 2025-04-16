@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField] Weapon _weapon;
     [SerializeField] float _timeToAttack = 2f;
     [SerializeField] float _extraRandomTimeToAttack = 0f;
     [SerializeField] float _attackDamage = 1f;
-    bool _isAttacking = false;
-    float _minTimeToAttacking = 0.2f;
+    Weapon _weapon;
     Animator _anim;
     Movement _movement;
+    bool _isAttacking = false;
+    float _minTimeToAttacking = 0.2f;
     bool _isReadyToAttack = true;
 
 
@@ -19,11 +19,6 @@ public class Attack : MonoBehaviour
         _anim = GetComponent<Animator>();
         _movement = GetComponent<Movement>();
         _weapon = GetComponentInChildren<Weapon>();
-	}
-
-	void Start()
-	{
-		_weapon.ExitWeapon();
 	}
 
 	public void InitiateAttack(Vector2 facingDirection){

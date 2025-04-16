@@ -11,7 +11,6 @@ public class ItemDropTableSO : ScriptableObject
         int i = Random.Range(0, _items.Length);
         
         if(_items[i] != null){
-            Debug.Log("frop");
             Instantiate(_items[i], position, Quaternion.identity);
         }
     }

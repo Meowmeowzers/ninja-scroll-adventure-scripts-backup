@@ -9,7 +9,6 @@ public class Projectile : MonoBehaviour
     Animator _anim;
     Rigidbody2D _rb;
     GameObject _source;
-    Stats _ignore;
     float _damage = 1f;
 
 	void Awake()

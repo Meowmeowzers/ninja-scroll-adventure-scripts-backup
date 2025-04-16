@@ -12,15 +12,17 @@ public class PatrolState: State
 
 	Vector2 _randomDirection;
 	float _newDuration;
+	IEnumerator _ref;
 
 	public override void EnterState(EnemyController ai){
 		_randomDirection = Random.insideUnitCircle.normalized;
-		ai.StartCoroutine(PatrolRoutine(ai));
+		_ref = PatrolRoutine(ai);
+		ai.StartCoroutine(_ref);
 	}
 
 	public override void UpdateState(EnemyController ai){
-		if(ai.GetController().GetAggroRange().CheckTargetExist()){
-			ai.StopCoroutine(nameof(PatrolRoutine));
+		if(ai.GetController().GetAggroRange().DoesTargetExist()){
+			ai.StopCoroutine(_ref);
 			ai.SwitchState(ai.chaseState);
 		}
 	}
@@ -34,7 +36,7 @@ public class PatrolState: State
 	}
 
 	public override void ExitState(EnemyController ai){
-		ai.StopCoroutine(PatrolRoutine(ai));
+		ai.StopCoroutine(_ref);
 	}
 	
 }

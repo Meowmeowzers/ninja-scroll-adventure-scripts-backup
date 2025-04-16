@@ -9,71 +9,72 @@ public class UnitController: MonoBehaviour
 {
     [SerializeField] CharacterState _currentState = CharacterState.Idle;
 
-    Animator anim;
-    SpriteRenderer sr;
-    Rigidbody2D rb;
-    Collider2D col;
-	Movement movement;
-	Attack attack;
-	Stats stats;
-	PlayerInteraction playerInteraction;
-    EnemyController ai;
-    AggroRange aggro;
-    Weapon weapon;
+    Animator _anim;
+    SpriteRenderer _sr;
+    Rigidbody2D _rb;
+    Collider2D _col;
+	Movement _movement;
+	Attack _attack;
+	Stats _stats;
+	PlayerInteraction _playerInteraction;
+    EnemyController _ai;
+    AggroRange _aggro;
+    Weapon _weapon;
 
 	void Awake()
 	{
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
-		movement = GetComponent<Movement>();
-        attack = GetComponent<Attack>();
-        stats = GetComponent<Stats>();
-        ai = GetComponent<EnemyController>();
-        playerInteraction = GetComponentInChildren<PlayerInteraction>();
-        aggro = GetComponentInChildren<AggroRange>();
-        weapon = GetComponentInChildren<Weapon>();
-        stats.SubscribeOnUnitKO(OnKO);
-        stats.SubscribeOnUnitDamaged(OnDamaged);
+        _anim = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
+        _sr = GetComponent<SpriteRenderer>();
+        _col = GetComponent<Collider2D>();
+		_movement = GetComponent<Movement>();
+        _attack = GetComponent<Attack>();
+        _stats = GetComponent<Stats>();
+        _ai = GetComponent<EnemyController>();
+        _playerInteraction = GetComponentInChildren<PlayerInteraction>();
+        _aggro = GetComponentInChildren<AggroRange>();
+        _weapon = GetComponentInChildren<Weapon>();
+        _stats.UnitKO += OnKO;
+        _stats.UnitDamaged += OnDamaged;
 
 	}
 
 	void Update()
 	{
         if(_currentState != CharacterState.KO){
-            if(attack.GetIsAttacking()) _currentState = CharacterState.Attacking;
-            else if(movement.GetIsMoving()) _currentState = CharacterState.Moving;
+            if(_attack.GetIsAttacking()) _currentState = CharacterState.Attacking;
+            else if(_movement.GetIsMoving()) _currentState = CharacterState.Moving;
             else _currentState = CharacterState.Idle;
         }
 	}
 
     public void Move(Vector2 input){
         if(_currentState != CharacterState.KO)
-            movement.SetMoveDirection(input);
+            _movement.SetMoveDirection(input);
     }
     public void Attack(){
         if(_currentState != CharacterState.KO)
-            attack.InitiateAttack(movement.GetFacingDirection());
+            _attack.InitiateAttack(_movement.GetFacingDirection());
     }
 
-    private void OnKO()
-	{
+    private void OnKO(){
 		_currentState = CharacterState.KO;
 
-        anim.SetBool("isDead", true);
-        col.enabled = false;
-        movement.enabled = false;
-        attack.enabled = false;
-        weapon.enabled = false;
-        if(playerInteraction != null){
-            playerInteraction.enabled = false;
+        _anim.SetBool("isDead", true);
+        _col.enabled = false;
+        _movement.enabled = false;
+        _attack.enabled = false;
+        _weapon.ExitWeapon();
+        _weapon.enabled = false;
+
+        if(_playerInteraction != null){
+            _playerInteraction.enabled = false;
         }
-        if(aggro != null){
-            aggro.enabled = false;
+        if(_aggro != null){
+            _aggro.enabled = false;
         }
-        if(ai != null){
-            ai.enabled = false;
+        if(_ai != null){
+            _ai.enabled = false;
         }
 	}
 
@@ -83,19 +84,19 @@ public class UnitController: MonoBehaviour
 
 	private IEnumerator HitAnimationRoutine()
 	{
-        sr.color = Color.HSVToRGB(0,0.25f,1f);
+        _sr.color = Color.HSVToRGB(0,0.25f,1f);
 		yield return new WaitForSeconds(0.1f);
-        sr.color = Color.HSVToRGB(0,0,1f);
+        _sr.color = Color.HSVToRGB(0,0,1f);
 	}
 
 	public void SwitchState(CharacterState state){
         _currentState = state;
     }
 
-    public Attack GetAttack() => attack;
-    public Movement GetMovement() => movement;
-	public PlayerInteraction GetPlayerInteraction() => playerInteraction;
-    public AggroRange GetAggroRange() => aggro;
+    public Attack GetAttack() => _attack;
+    public Movement GetMovement() => _movement;
+	public PlayerInteraction GetPlayerInteraction() => _playerInteraction;
+    public AggroRange GetAggroRange() => _aggro;
     public CharacterState GetState() => _currentState;
 
 }
