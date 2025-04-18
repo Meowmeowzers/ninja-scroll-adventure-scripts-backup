@@ -56,6 +56,9 @@ public class UnitController: MonoBehaviour
         if(_currentState != CharacterState.KO)
             _attack.InitiateAttack(_movement.GetFacingDirection());
     }
+    public void SwitchAttack(int index){
+        _attack.SwitchWeapon(index);
+    }
 
     private void OnKO(){
 		_currentState = CharacterState.KO;

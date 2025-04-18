@@ -13,7 +13,6 @@ public class Attack : MonoBehaviour
     float _minTimeToAttacking = 0.2f;
     bool _isReadyToAttack = true;
 
-
 	void Awake()
     {
         _anim = GetComponent<Animator>();
@@ -57,16 +56,10 @@ public class Attack : MonoBehaviour
         return _isReadyToAttack;
     }
 
-    public float GetAttackDamage(){
-        return _attackDamage;
+    public void SwitchWeapon(int index){
+        _weapon.SwitchWeapon(index);
     }
-    public void SetAttackDamage(float newDamage){
-        _attackDamage = newDamage;
-    }
-
-    public void AddAttackDamage(float value){
-        _attackDamage += value;
-    }
+    public Weapon GetWeapon() => _weapon;
 
 	void OnDisable()
 	{

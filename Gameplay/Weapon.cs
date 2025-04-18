@@ -1,15 +1,18 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Weapon : MonoBehaviour
 {
-   [SerializeField] AttackType _attackType;
+   [SerializeField] List<AttackType> _attackType;
    Vector2 _direction;
    float _attackDamage = 1f;
+   [SerializeField] int _currentAttackIndex = 0;
 
 	void Awake()
 	{
-      _attackType.InitializeWeapon(this);
+      _attackType[_currentAttackIndex].InitializeWeapon(this);
 	}
+   
 	void OnTriggerEnter2D(Collider2D collision)
 	{
       if(collision.GetComponent<IDamageable>() != null){
@@ -20,27 +23,31 @@ public class Weapon : MonoBehaviour
 	public void StartWeapon(float attackDamage)
 	{
       _attackDamage = attackDamage;
-      _attackType.StartWeapon(this);
+      _attackType[_currentAttackIndex].StartWeapon(this);
    }
 
 	public void Execute(Vector2 direction, GameObject source)
 	{
       _direction = direction;
-      if(_attackType != null){ 
-         _attackType.Execute(this, source);
+      if(_attackType[_currentAttackIndex] != null){ 
+         _attackType[_currentAttackIndex].Execute(this, source);
       }
 	}
 
 	public void ExitWeapon()
 	{
-	   _attackType.ExitWeapon(this);
+	   _attackType[_currentAttackIndex].ExitWeapon(this);
 	}
 	
-   public Vector2 GetDirection(){
-      return _direction;
+   public void SwitchWeapon(int index){
+      if(_attackType[_currentAttackIndex] != null){
+         _attackType[_currentAttackIndex].ExitWeapon(this);
+      }
+      _currentAttackIndex = index;
+      _attackType[_currentAttackIndex].InitializeWeapon(this);
    }
 
-	internal float GetDamage(){
-      return _attackDamage;
-   }
+   public Vector2 GetDirection() => _direction;
+   public int GetIndex() => _currentAttackIndex;
+	internal float GetDamage() => _attackDamage;
 }
