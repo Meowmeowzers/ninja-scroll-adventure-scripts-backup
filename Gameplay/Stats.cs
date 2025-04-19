@@ -32,6 +32,6 @@ public class Stats : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     }
     public void UpdateHealth(){
-        OnHealthChanged?.Invoke(_currentHealth);
+        OnHealthChanged?.Invoke(_currentHealth / _maxHealth);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class InGameUI : MonoBehaviour
     [SerializeField] Collection _collectionToObserve;
     [SerializeField] TextMeshProUGUI _healthText;
     [SerializeField] TextMeshProUGUI _scrollText;
+    [SerializeField] Slider _hpSlider;
 
 	void Awake()
 	{
@@ -26,19 +28,22 @@ public class InGameUI : MonoBehaviour
 	void Start()
 	{
         if(_statsToObserve != null)
-		    _healthText.text = $"Health: {_statsToObserve.GetHealth()}";
+		    // _healthText.text = $"Health: {_statsToObserve.GetHealth()}";
+            _hpSlider.value = 1;
 	}
 
     void UpdateHealthUI(float newValue)
     {
         if(_statsToObserve != null)
-            _healthText.text = $"Health: {newValue}";
+            // _healthText.text = $"Health: {newValue}";
+            _hpSlider.value = newValue;
+
     }
 
     void UpdateScrollUI(int newValue)
     {
         if(_collectionToObserve != null)
-        _scrollText.text = $"Scrolls: {newValue} / 20";
+        _scrollText.text = $"{newValue} / 20";
     }
 
 	void OnDisable()
