@@ -70,17 +70,20 @@ public class GameManager : MonoBehaviour
         _pause.enabled = false;
         _options.enabled = false;
         _ingame.enabled = true;
+        GetComponent<AudioSettings>().AllowVolumeChange(false);
     }
 
     public void ShowOptionsScreen(){
         _pause.enabled = false;
         _options.enabled = true;
         _options.GetComponent<SettingsUI>().InitializeSettingsUI();
+        GetComponent<AudioSettings>().AllowVolumeChange(true);
     }
 
     public void ShowPauseScreen(){
         _pause.enabled = true;
         _options.enabled = false;
+        GetComponent<AudioSettings>().AllowVolumeChange(false);
     }
 
     public void StartGame(){
@@ -89,16 +92,19 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         audioPlayer.SwitchToMainMusic();
         _ingame.enabled = true;
+        GetComponent<AudioSettings>().AllowVolumeChange(false);
     }
     public void OpenStartMenu(){
         _startMenu.enabled = true;
         _optionsMenu.enabled = false;
         _creditsMenu.enabled = false;
+        GetComponent<AudioSettings>().AllowVolumeChange(false);
 	}
     public void OpenOptionsMenu(){
         _optionsMenu.enabled = true;
         _startMenu.enabled = false;
         _optionsMenu.GetComponent<SettingsUI>().InitializeSettingsUI();
+        GetComponent<AudioSettings>().AllowVolumeChange(true);
 	}
     public void BackToMenu(){
         _ingame.enabled = false;
@@ -107,6 +113,7 @@ public class GameManager : MonoBehaviour
         _gameOverUI.enabled = false;
         _winScreen.GetComponent<WinUI>().Reset();
         _winScreen.enabled = false;
+        GetComponent<AudioSettings>().AllowVolumeChange(false);
         Time.timeScale = 1f;
         audioPlayer.SwitchToTitleMusic();
         SceneManager.LoadScene("MainMenuScene");

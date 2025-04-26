@@ -6,10 +6,6 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMPro.TMP_Dropdown dropdown;
-    
-    private const string MUSIC_KEY = "MusicVolume";
-    private const string SFX_KEY = "SFXVolume";
-    private const string FPS_KEY = "Graphics_FPS";
 
 	void Start()
 	{
@@ -19,9 +15,9 @@ public class SettingsUI : MonoBehaviour
 	}
 
     public void InitializeSettingsUI(){
-        musicSlider.value = PlayerPrefs.GetFloat(MUSIC_KEY, 0.5f);
-        sfxSlider.value = PlayerPrefs.GetFloat(SFX_KEY, 0.5f);
-        dropdown.value = PlayerPrefs.GetInt(FPS_KEY, 1);
+        musicSlider.value = PlayerPrefs.GetFloat(Constants.MUSIC_KEY, Constants.VOLUME_DEFAULT);
+        sfxSlider.value = PlayerPrefs.GetFloat(Constants.SFX_KEY, Constants.VOLUME_DEFAULT);
+        dropdown.value = PlayerPrefs.GetInt(Constants.FPS_KEY, Constants.FPS_DEFAULT);
     }
 
 	void OnDisable()

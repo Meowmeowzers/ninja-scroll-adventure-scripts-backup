@@ -16,10 +16,11 @@ public class AudioPlayer : MonoBehaviour
     
 	void Start()
 	{
-        GameManager.instance.audioSettings.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 0.5f));
-        GameManager.instance.audioSettings.SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 0.5f));
-        _musicSource.clip = _titleMusic;
-		_musicSource.Play();
+        // using the initialize function makes volume broken
+        GameManager.instance.audioSettings.SetMusicVolume(PlayerPrefs.GetFloat(Constants.MUSIC_KEY, Constants.VOLUME_DEFAULT));
+        GameManager.instance.audioSettings.SetSFXVolume(PlayerPrefs.GetFloat(Constants.SFX_KEY, Constants.VOLUME_DEFAULT)); 
+		_musicSource.clip = _titleMusic;
+        _musicSource.Play();
 	}
 
     public void SwitchToMainMusic(){
