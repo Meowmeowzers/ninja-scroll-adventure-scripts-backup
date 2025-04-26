@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName="Attacks/8DMelee")]
 public class Melee8DAttack : AttackType
 {
 	[SerializeField] Sprite _weaponSprite;
+	[SerializeField] float _damage = 1f;
+	[SerializeField] List<DamageType> _damageType = new(){ DamageType.MeleePhysical};
 	[SerializeField] AudioClip _weaponSound;
 	[SerializeField] Vector2 _initialLocationOffset = Vector2.zero;
 	[SerializeField] Vector2 _offsetUp = new(0, 0.5f);								
@@ -43,7 +46,7 @@ public class Melee8DAttack : AttackType
 		weapon.GetComponent<SpriteRenderer>().enabled = true;
       	weapon.GetComponent<BoxCollider2D>().enabled = true;
 		if(_weaponSound != null)
-			GameManager.PlaySound(_weaponSound, 0.8f);
+			GameManager.instance.audioPlayer.PlaySound(_weaponSound, 0.8f);
 	}
 	public override void ExitWeapon(Weapon weapon){
 		weapon.GetComponent<SpriteRenderer>().enabled = false;
@@ -103,4 +106,7 @@ public class Melee8DAttack : AttackType
 		new Vector2(-1, 0),   // Left
 		new Vector2(-1, 1)    // Up-Left
 	};
+
+	public override float GetDamage() => _damage;
+	public override List<DamageType> GetDamageType() => _damageType;
 }

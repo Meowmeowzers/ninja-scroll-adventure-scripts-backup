@@ -5,8 +5,7 @@ public class ChaseState: State
 {
 	[SerializeField] float minDistanceToAttack = 1.2f;
 
-	public override void EnterState(EnemyController ai){
-	}
+	public override void EnterState(EnemyController ai){}
 	
 	public override void UpdateState(EnemyController ai){
 		if(ai.GetController().GetAggroRange().DoesTargetExist()){

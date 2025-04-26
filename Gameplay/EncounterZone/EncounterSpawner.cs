@@ -4,7 +4,6 @@ public class EncounterSpawner : MonoBehaviour
 {
     [SerializeField] GameObject spawn;
     [SerializeField] GameObject trackedSpawn;
-    [SerializeField] EnemyController trackedController;
     bool isActive = false;
     event System.Action Pawned;
     System.Action action;
@@ -22,13 +21,12 @@ public class EncounterSpawner : MonoBehaviour
     public void Spawn(System.Action reduce)
 	{
         trackedSpawn = Instantiate(spawn, transform);
-        trackedController = trackedSpawn.GetComponent<EnemyController>();
         Pawned += reduce;
         action = reduce;
         isActive = true;
     }
 
-	void OnDestroy()
+	void OnDisable()
 	{
 		Pawned -= action;
 	}

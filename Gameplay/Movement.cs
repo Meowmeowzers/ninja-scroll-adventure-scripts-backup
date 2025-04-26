@@ -50,16 +50,14 @@ public class Movement : MonoBehaviour
         _anim.SetFloat("FaceX", _facingDirection.x);
         _anim.SetFloat("FaceY", _facingDirection.y);
     }
-    public void SetCanMove(bool i){
-        _canMove = i;
-    }
-    public Vector2 GetFacingDirection(){
-        return _facingDirection;
-    }
+    
+    public void SetCanMove(bool i) => _canMove = i;
+    public void StopMove(){
+        SetMoveDirection(Vector2.zero);
+    } 
 
-    public bool GetIsMoving(){
-        return _isMoving;
-    }
+    public Vector2 GetFacingDirection() => _facingDirection;
+    public bool GetIsMoving() => _isMoving;
 
 	void OnDisable()
 	{

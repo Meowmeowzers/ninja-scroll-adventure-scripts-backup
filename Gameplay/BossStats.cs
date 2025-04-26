@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : Stats, IDamageable
+public class BossStats : Stats, IDamageable
 {
-    [SerializeField] AudioClip _soundOnKO;
-    [SerializeField] GameObject _particlesOnKO;
+   [SerializeField] AudioClip _KOSound;
+   [SerializeField] GameObject _particlesOnKO;
 
     public void RestoreHealth(float amount){
         if(_isKO) return;
@@ -26,9 +26,8 @@ public class EnemyStats : Stats, IDamageable
         UnitDamaged();
         if(_currentHealth < 1f){
             _isKO = true;
-            if(_soundOnKO != null) GameManager.instance.audioPlayer.PlaySound(_soundOnKO);
-            if(GetComponent<ItemDrop>())
-                GetComponent<ItemDrop>().DropItem(transform.position);
+            if(_KOSound != null) GameManager.instance.audioPlayer.PlaySound(_KOSound);
+            GetComponent<ItemDrop>().DropItem(transform.position);
             if(_particlesOnKO != null) Instantiate(_particlesOnKO, transform.position, Quaternion.identity);
             UnitKO();
             StartCoroutine(nameof(RemoveBody));

@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public enum CharacterState {Idle, Moving, Attacking, KO}
-
 [RequireComponent(typeof(Stats), typeof(Movement), typeof(Attack))]
 public class UnitController: MonoBehaviour
 {
@@ -34,8 +32,8 @@ public class UnitController: MonoBehaviour
         _playerInteraction = GetComponentInChildren<PlayerInteraction>();
         _aggro = GetComponentInChildren<AggroRange>();
         _weapon = GetComponentInChildren<Weapon>();
-        _stats.UnitKO += OnKO;
-        _stats.UnitDamaged += OnDamaged;
+        _stats.OnUnitKO += KO;
+        _stats.OnUnitDamaged += Damaged;
 
 	}
 
@@ -60,7 +58,7 @@ public class UnitController: MonoBehaviour
         _attack.SwitchWeapon(index);
     }
 
-    private void OnKO(){
+    private void KO(){
 		_currentState = CharacterState.KO;
 
         _anim.SetBool("isDead", true);
@@ -81,7 +79,7 @@ public class UnitController: MonoBehaviour
         }
 	}
 
-    private void OnDamaged(){
+    private void Damaged(){
         StartCoroutine(HitAnimationRoutine());
     }
 

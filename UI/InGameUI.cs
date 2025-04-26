@@ -1,58 +1,54 @@
 using UnityEngine;
-using TMPro;
-using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
-    [SerializeField] Stats _statsToObserve;
-    [SerializeField] Collection _collectionToObserve;
-    [SerializeField] TextMeshProUGUI _healthText;
+    [SerializeField] Stats _stats;
+    [SerializeField] Collection _collection;
     [SerializeField] TextMeshProUGUI _scrollText;
     [SerializeField] Slider _hpSlider;
 
-	void Awake()
-	{
-		_collectionToObserve = FindObjectOfType<Collection>();
-	}
-	void OnEnable()
-    {
-        if (_statsToObserve != null){
-            _statsToObserve.OnHealthChanged += UpdateHealthUI;
-        }
-        if(_collectionToObserve != null){
-            _collectionToObserve.OnScrollUpdate += UpdateScrollUI;
-        }
-    }
+    public void ReconnectStatsToUI(Stats stats, Collection collection){
+        _stats = stats;
+        _collection = collection;
 
-	void Start()
-	{
-        if(_statsToObserve != null)
-		    // _healthText.text = $"Health: {_statsToObserve.GetHealth()}";
-            _hpSlider.value = 1;
-	}
+        _stats.OnHealthChanged -= UpdateHealthUI;
+        _stats.OnHealthChanged += UpdateHealthUI;
+        GameManager.instance.collection.OnScrollUpdate += UpdateScrollUI;        
+
+        _hpSlider.value = 1;
+        UpdateScrollUI(_collection.GetScore());
+    }    
 
     void UpdateHealthUI(float newValue)
     {
-        if(_statsToObserve != null)
-            // _healthText.text = $"Health: {newValue}";
+        if(_stats != null)
             _hpSlider.value = newValue;
-
     }
 
     void UpdateScrollUI(int newValue)
     {
-        if(_collectionToObserve != null)
-        _scrollText.text = $"{newValue} / 20";
+        if(_collection != null)
+            _scrollText.text = $"{newValue} / 20";
     }
 
 	void OnDisable()
     {
-        if (_statsToObserve != null){
-            _statsToObserve.OnHealthChanged -= UpdateHealthUI;
+        if (_stats != null){
+            _stats.OnHealthChanged -= UpdateHealthUI;
         }
-        if(_collectionToObserve != null){
-            _collectionToObserve.OnScrollUpdate -= UpdateScrollUI;
+        if(_collection != null){
+            GameManager.instance.collection.OnScrollUpdate -= UpdateScrollUI;
+        }
+    }
+    void OnDestroy()
+    {
+        if (_stats != null){
+            _stats.OnHealthChanged -= UpdateHealthUI;
+        }
+        if(_collection != null){
+            GameManager.instance.collection.OnScrollUpdate -= UpdateScrollUI;
         }
     }
 }

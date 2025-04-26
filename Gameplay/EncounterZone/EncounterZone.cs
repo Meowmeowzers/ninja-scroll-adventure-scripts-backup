@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class EncounterZone : MonoBehaviour
 {
-    [SerializeField] EncounterSpawner[] _spawns;
-    [SerializeField] EncounterEntrance[] _entrances;
-    [SerializeField] EncounterBarrier[] _barriers;
     [SerializeField] AudioClip _startSound;
     [SerializeField] AudioClip _endSound;
+    [SerializeField] bool _isBossEncounter = false;
+    EncounterSpawner[] _spawns;
+    EncounterEntrance[] _entrances;
+    EncounterBarrier[] _barriers;
     int _currentSpawn = 0;
     bool _hasStarted = false;
 
@@ -43,8 +44,14 @@ public class EncounterZone : MonoBehaviour
                 i.Spawn(OnReduce);
                 _currentSpawn++;
             }
-            GameManager.PlaySound(_startSound);
-            GameManager.SwitchToEncounterMusic();
+            GameManager.instance.audioPlayer.PlaySound(_startSound);
+
+            if(!_isBossEncounter){
+                GameManager.instance.audioPlayer.SwitchToEncounterMusic();
+            }
+            else{
+                GameManager.instance.audioPlayer.SwitchToBossMusic();
+            }
         }
     }
 
@@ -56,9 +63,15 @@ public class EncounterZone : MonoBehaviour
         foreach(var i in _barriers){
             i.gameObject.SetActive(false);
         }
-        GameManager.PlaySound(_endSound);
-        GameManager.SwitchToMainMusic();
+        GameManager.instance.audioPlayer.PlaySound(_endSound);
         
+        if(!_isBossEncounter){
+            GameManager.instance.audioPlayer.SwitchToMainMusic();
+        }
+        else{
+            GameManager.instance.WinGame();
+        }            
+
     }
 
     void OnDestroy(){

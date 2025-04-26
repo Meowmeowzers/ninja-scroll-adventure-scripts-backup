@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DestroyableStat : Stats, IDamageable
@@ -17,8 +18,16 @@ public class DestroyableStat : Stats, IDamageable
         aus = GetComponent<AudioSource>();
     }
 
-    public void DamageHealth(float amount){
+    public void RestoreHealth(float amount)
+	{
+	    return;
+	}
+
+    public void DamageHealth(float amount, List<DamageType> damageType){
         if(_isKO) return;
+        foreach(var i in damageType){
+            if(_damageTypeImmunities.Contains(i)) return;
+        }
 
         _currentHealth -= amount;
         if(_currentHealth < 1f){

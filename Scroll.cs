@@ -7,8 +7,8 @@ public class Scroll : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if(collision.GetComponent<PlayerStats>()){
-			GameManager.PlaySound(_soundClip[Random.Range(0, _soundClip.Length)]);
-            Collection._instance.OnCollect?.Invoke();
+			GameManager.instance.audioPlayer.PlaySound(_soundClip[Random.Range(0, _soundClip.Length)]);
+            GameManager.instance.collection.IncreaseCollection();
             Destroy(gameObject);
         }
 	}

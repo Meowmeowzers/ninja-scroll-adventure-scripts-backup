@@ -1,16 +1,18 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Stats : MonoBehaviour
 {
-    [SerializeField] internal float _currentHealth = 0f;
-    [SerializeField] internal float _startingHealth = 10f;
-    [SerializeField] internal float _maxHealth = 10f;
-    [SerializeField] internal bool _isKO = false;
+    [SerializeField] protected float _currentHealth = 0f;
+    [SerializeField] protected float _startingHealth = 10f;
+    [SerializeField] protected float _maxHealth = 10f;
+    [SerializeField] protected List<DamageType> _damageTypeImmunities;
+    [SerializeField] protected bool _isKO = false;
     public event Action<float> OnHealthChanged;
-    public event Action UnitKO;
-    public event Action UnitDamaged;
+    public event Action OnUnitKO;
+    public event Action OnUnitDamaged;
 
 	void Awake()
 	{
@@ -22,11 +24,11 @@ public class Stats : MonoBehaviour
         return _currentHealth;
     }
 
-    protected void OnUnitIsKO(){
-        UnitKO?.Invoke();
+    protected void UnitKO(){
+        OnUnitKO?.Invoke();
     }
-    protected void OnUnitDamaged(){
-        UnitDamaged?.Invoke();
+    protected void UnitDamaged(){
+        OnUnitDamaged?.Invoke();
     }
     public IEnumerator TakeHitEffect(){
         yield return new WaitForSeconds(0.1f);

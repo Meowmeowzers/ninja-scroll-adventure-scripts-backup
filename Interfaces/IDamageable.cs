@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 public interface IDamageable
 {
-    public virtual void DamageHealth(float amount){}
-    public virtual void RestoreHealth(float amount){}
+    public abstract void DamageHealth(float amount, List<DamageType> damageType);
+    public abstract void RestoreHealth(float amount);
 }

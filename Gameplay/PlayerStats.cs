@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStats : Stats, IDamageable
@@ -14,16 +15,20 @@ public class PlayerStats : Stats, IDamageable
         }
         UpdateHealth();
     }
-    public void DamageHealth(float amount){
+    public void DamageHealth(float amount, List<DamageType> damageType){
         if(_isKO) return;
+        foreach(var i in damageType){
+            if(_damageTypeImmunities.Contains(i)) return;
+        }
 
         _currentHealth -= amount;
-        OnUnitDamaged();       
+        UnitDamaged();       
         UpdateHealth();
         if(_currentHealth < 1f){
             _isKO = true;
-            if(_KOSound != null) GameManager.PlaySound(_KOSound);
-            OnUnitIsKO();
+            if(_KOSound != null) GameManager.instance.audioPlayer.PlaySound(_KOSound);
+            UnitKO();
+            GameManager.instance.GameOver();
         }
     }
 }

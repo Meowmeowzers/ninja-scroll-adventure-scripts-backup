@@ -3,32 +3,28 @@ using UnityEngine;
 
 public class Collection : MonoBehaviour
 {
-    public static Collection _instance;
+    public static Collection instance;
 
     [SerializeField] int _scrollCollection = 0;
-    public Action OnCollect;
-    public Action<int> OnScrollUpdate;
+    
+    public event Action<int> OnScrollUpdate;
 
     private void Awake()
     {
-        _instance = this;
+        instance = this;
     }
-
-	void OnEnable()
-	{
-		OnCollect += IncreaseCollection;
-	}
-	void OnDisable()
-	{
-		OnCollect -= IncreaseCollection;
-	}
 
 	public void IncreaseCollection(){
         _scrollCollection++;
         OnScrollUpdate?.Invoke(_scrollCollection);
     }
 
-    public Collection GetInstance() => _instance;
+    public void ResetCollection(){
+        _scrollCollection = 0;
+        OnScrollUpdate = null;
+    }
+
+    public Collection GetInstance() => instance;
 
     public int GetScore() => _scrollCollection;
 }

@@ -5,10 +5,10 @@ public class EnemyController : MonoBehaviour
     UnitController _unitController;
     [SerializeField] State _currentState;
 
-	[SerializeField] internal State idleState;
-	[SerializeField] internal State patrolState;
-	[SerializeField] internal State chaseState;
-	[SerializeField] internal State attackState;
+	public State idleState;
+	public State patrolState;
+	public State chaseState;
+	public State attackState;
 
 	void Awake(){
         _unitController = GetComponent<UnitController>();

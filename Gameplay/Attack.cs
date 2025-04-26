@@ -5,7 +5,7 @@ public class Attack : MonoBehaviour
 {
     [SerializeField] float _timeToAttack = 2f;
     [SerializeField] float _extraRandomTimeToAttack = 0f;
-    [SerializeField] float _attackDamage = 1f;
+    [SerializeField] float _attackStat = 1f;
     Weapon _weapon;
     Animator _anim;
     Movement _movement;
@@ -27,7 +27,7 @@ public class Attack : MonoBehaviour
             _isAttacking = true;
             _isReadyToAttack = false;
             
-            _weapon.StartWeapon(_attackDamage);
+            _weapon.StartWeapon(_attackStat);
             _weapon.Execute(facingDirection, gameObject);
 
             StartCoroutine(CAttackCooldown());
